@@ -1,23 +1,46 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Register from './components/Register';
+import Login from './components/Login';
+import Notification from './components/Notification';
+import Notes from './components/Notes';
+import ErrorPage from './components/ErrorPage';
+import NewNote from './components/NewNote';
 
 function App() {
+  const [message, setMessage] = useState({ code: null, message: null });
+  const sendMessage = (p1, p2) => {
+    if (p1 === 'ok') {
+      setMessage({ code: 'ok', message: p2 });
+    } else {
+      setMessage({ code: 'error', message: p2 });
+    }
+    setTimeout(() => {
+      setMessage({ code: null, message: null });
+    }, 3000);
+  };
+
+  useEffect(() => {}, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Notification message={message} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login sendMessage={sendMessage} />} />
+          <Route
+            path="/register"
+            element={<Register sendMessage={sendMessage} />}
+          />
+          <Route path="/notes" element={<Notes sendMessage={sendMessage} />} />
+          <Route
+            path="/newNote"
+            element={<NewNote sendMessage={sendMessage} />}
+          />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
