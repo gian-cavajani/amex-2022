@@ -5,8 +5,8 @@ const setStorage = (user, pass, id) => {
 };
 const getStorage = () => {
   const user = localStorage.getItem('userName');
-  const pass = localStorage.getItem('userPass');
+  const type = localStorage.getItem('userType');
   const id = localStorage.getItem('userId');
-  return { user, pass, id };
+  return { user, type, id };
 };
 export default { setStorage, getStorage };

@@ -36,6 +36,7 @@ const NewNote = ({ sendMessage }) => {
           description: newDesc,
           userId: id,
           type,
+          deleted: false,
         });
         sendMessage('ok', 'Note created');
       } catch (error) {

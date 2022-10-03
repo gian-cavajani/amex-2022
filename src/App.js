@@ -7,6 +7,7 @@ import Notification from './components/Notification';
 import Notes from './components/Notes';
 import ErrorPage from './components/ErrorPage';
 import NewNote from './components/NewNote';
+import Admin from './components/Admin';
 
 function App() {
   const [message, setMessage] = useState({ code: null, message: null });
@@ -37,6 +38,10 @@ function App() {
           <Route
             path="/newNote"
             element={<NewNote sendMessage={sendMessage} />}
+          />
+          <Route
+            path="/admin-page"
+            element={<Admin sendMessage={sendMessage} />}
           />
           <Route path="*" element={<ErrorPage />} />
         </Routes>

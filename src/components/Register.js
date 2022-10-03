@@ -9,7 +9,11 @@ const Register = ({ sendMessage }) => {
   useEffect(() => {
     const userId = functions.getStorage();
     if (userId.user) {
-      navigate('/notes');
+      if (userId.user === 'admin@gmail.com') {
+        navigate('/admin-page');
+      } else {
+        navigate('/notes');
+      }
     }
   }, []);
 

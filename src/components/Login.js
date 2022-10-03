@@ -13,7 +13,11 @@ const Login = ({ sendMessage }) => {
   useEffect(() => {
     const userId = functions.getStorage();
     if (userId.user) {
-      navigate('/notes');
+      if (userId.user === 'admin@gmail.com') {
+        navigate('/admin-page');
+      } else {
+        navigate('/notes');
+      }
     }
   }, []);
 
@@ -27,9 +31,14 @@ const Login = ({ sendMessage }) => {
         username,
         password
       );
-      functions.setStorage(username, password, userInfo.user.uid);
+      if (username === 'admin@gmail.com') {
+        functions.setStorage(username, 'admin', userInfo.user.uid);
+        navigate('/admin-page');
+      } else {
+        functions.setStorage(username, 'user', userInfo.user.uid);
+        navigate('/notes');
+      }
       sendMessage('ok', 'successful login');
-      navigate('/notes');
     } catch (error) {
       sendMessage('error', error.message);
     }

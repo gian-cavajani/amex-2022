@@ -15,6 +15,10 @@
 .notes {
   display: flex;
 }
+li {
+  border: 1px black solid;
+  padding: 0;
+}
 .ok {
   background: #d4edda;
   color: rgb(35, 168, 35);

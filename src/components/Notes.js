@@ -29,17 +29,17 @@ const Notes = ({ sendMessage }) => {
     if (!storage.user) {
       navigate('/');
     } else {
-      const getUsers = async () => {
+      const getUserNotes = async () => {
         const data = await getDocs(notesCollectionRef);
         console.log(data.docs);
         setNotes(
           data.docs
             .map((doc) => ({ ...doc.data(), id: doc.id }))
-            .filter((note) => note.userId == storage.id)
+            .filter((note) => note.userId == storage.id && !note.deleted)
         );
         setLoad(false);
       };
-      getUsers();
+      getUserNotes();
     }
   }, []);
 
@@ -52,8 +52,11 @@ const Notes = ({ sendMessage }) => {
   //NOTE DELETE
   const deleteNote = async (id) => {
     const noteDoc = doc(db, 'notes', id);
+    const newFields = {
+      deleted: true,
+    };
 
-    await deleteDoc(noteDoc);
+    await updateDoc(noteDoc, newFields);
     sendMessage('ok', 'note deleted');
     setNotes(notes.filter((note) => note.id !== id));
   };
