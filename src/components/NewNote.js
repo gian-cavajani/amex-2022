@@ -21,9 +21,9 @@ const NewNote = ({ sendMessage }) => {
 
   const handleNewNote = async () => {
     const { id } = functions.getStorage();
-    let newTitle = title.current.value;
-    let newDesc = description.current.value;
-    let type = selectRef.current.value;
+    const newTitle = title.current.value;
+    const newDesc = description.current.value;
+    const type = selectRef.current.value;
 
     if (newTitle === '' || newDesc === '') {
       sendMessage('error', 'Inputs shouldnt be empty ');
@@ -46,40 +46,38 @@ const NewNote = ({ sendMessage }) => {
   };
 
   return (
-    <div>
-      <section>
-        <h2>Create new note/reminder: </h2>
-        <article>
-          <label>
-            Title:
-            <input placeholder="Enter a title" ref={title} type="text" />
-          </label>
-          <br />
-          <label>
-            Description:
-            <textarea
-              placeholder="Enter a description"
-              ref={description}
-              type=""
-            />
-          </label>
-          <br />
-          <label>
-            Type:
-            <select id="type" ref={selectRef}>
-              <option value="tasks">tasks</option>
-              <option value="chores">chores</option>
-              <option value="work">work-related</option>
-              <option value="leisure">leisure</option>
-              <option value="others">others</option>
-            </select>
-          </label>
-          <br />
-          <button onClick={handleNewNote}>create</button>
-          <EndCard title="Go to your " link="/notes" text="Notes" />
-        </article>
-      </section>
-    </div>
+    <section>
+      <h2>Create new note/reminder: </h2>
+      <article>
+        <label>
+          Title:
+          <input placeholder="Enter a title" ref={title} type="text" />
+        </label>
+        <br />
+        <label>
+          Description:
+          <textarea
+            placeholder="Enter a description"
+            ref={description}
+            type=""
+          />
+        </label>
+        <br />
+        <label>
+          Type:
+          <select id="type" ref={selectRef}>
+            <option value="tasks">tasks</option>
+            <option value="chores">chores</option>
+            <option value="work">work-related</option>
+            <option value="leisure">leisure</option>
+            <option value="others">others</option>
+          </select>
+        </label>
+        <br />
+        <button onClick={handleNewNote}>create</button>
+      </article>
+      <EndCard title="Go to your " link="/notes" text="Notes" />
+    </section>
   );
 };
 

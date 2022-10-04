@@ -21,7 +21,9 @@ const Login = ({ sendMessage }) => {
     }
   }, []);
 
-  const handleLogin = async () => {
+  const handleLogin = async (ev) => {
+    ev.preventDefault();
+
     let username = user.current.value;
     let password = pass.current.value;
 
@@ -47,7 +49,7 @@ const Login = ({ sendMessage }) => {
   return (
     <section>
       <h2>Sign in: </h2>
-      <article>
+      <form onSubmit={handleLogin}>
         <label>
           Email:
           <input placeholder="Enter your email" ref={user} type="text" />
@@ -59,8 +61,8 @@ const Login = ({ sendMessage }) => {
         </label>
 
         <br />
-        <input type="button" value="Login" onClick={handleLogin} />
-      </article>
+        <input type="submit" value="Login" />
+      </form>
       <EndCard
         title="You dont have an account?"
         link="/register"

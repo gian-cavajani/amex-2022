@@ -12,7 +12,6 @@ import {
   deleteDoc,
   doc,
 } from 'firebase/firestore';
-import { map } from '@firebase/util';
 
 const Admin = ({ sendMessage }) => {
   const [notes, setNotes] = useState([]);
@@ -28,7 +27,6 @@ const Admin = ({ sendMessage }) => {
     }
     const getAllNotes = async () => {
       const data = await getDocs(notesCollectionRef);
-      console.log(data.docs);
       setNotes(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       setLoad(false);
     };
@@ -40,6 +38,7 @@ const Admin = ({ sendMessage }) => {
     localStorage.clear();
     navigate('/');
   };
+
   let notesToShow = notes;
   if (!showAll) {
     notesToShow = notes.filter((note) => note.deleted);
@@ -48,7 +47,7 @@ const Admin = ({ sendMessage }) => {
     return <Loading />;
   }
   return (
-    <div>
+    <section>
       <p>
         user logged in: <strong>Admin</strong>
         <button onClick={handleSignOut}>Log Out</button>
@@ -58,8 +57,14 @@ const Admin = ({ sendMessage }) => {
       </button>
       <ul>
         {notesToShow.map((n) => (
-          <li>
+          <li key={n.id}>
             <p>title: {n.title}</p>
+            status:{' '}
+            {n.state ? (
+              <span className="ok2">completed</span>
+            ) : (
+              <span className="error2">incompleted</span>
+            )}
             <p>date created: {n.date.toDate().toDateString()}</p>
             <p>user id: {n.userId}</p>
             {n.deleted ? (
@@ -70,7 +75,7 @@ const Admin = ({ sendMessage }) => {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 };
 

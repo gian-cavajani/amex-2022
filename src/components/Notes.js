@@ -31,7 +31,6 @@ const Notes = ({ sendMessage }) => {
     } else {
       const getUserNotes = async () => {
         const data = await getDocs(notesCollectionRef);
-        console.log(data.docs);
         setNotes(
           data.docs
             .map((doc) => ({ ...doc.data(), id: doc.id }))
@@ -82,21 +81,21 @@ const Notes = ({ sendMessage }) => {
     return <Loading />;
   }
   return (
-    <div>
+    <section>
       <p>
         user logged in: <strong>{user.user}</strong>
         <button onClick={handleSignOut}>Log Out</button>
       </p>
 
       {notes.length < 1 ? (
-        <div>You don't have notes</div>
+        <span>You don't have notes</span>
       ) : (
-        <div>
+        <article>
           <h2>Your notes: </h2>
           <button onClick={() => setShowAll(!showAll)}>
             show {showAll ? 'only incompleted' : 'all'}
           </button>
-          <div className="notes">
+          <article className="notes">
             {notesToShow.map((n) => {
               return (
                 <Note
@@ -111,8 +110,8 @@ const Notes = ({ sendMessage }) => {
                 />
               );
             })}
-          </div>
-        </div>
+          </article>
+        </article>
       )}
       <button
         onClick={() => {
@@ -120,7 +119,7 @@ const Notes = ({ sendMessage }) => {
         }}>
         create new note
       </button>
-    </div>
+    </section>
   );
 };
 

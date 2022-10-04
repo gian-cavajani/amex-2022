@@ -22,10 +22,11 @@ const Register = ({ sendMessage }) => {
   const pass = useRef(null);
   const pass2 = useRef(null);
 
-  const handleRegister = async () => {
-    let username = user.current.value;
-    let password = pass.current.value;
-    let password2 = pass2.current.value;
+  const handleRegister = async (ev) => {
+    ev.preventDefault();
+    const username = user.current.value;
+    const password = pass.current.value;
+    const password2 = pass2.current.value;
 
     if (password !== password2) {
       sendMessage('error', 'Passwords must be equal');
@@ -48,7 +49,7 @@ const Register = ({ sendMessage }) => {
   return (
     <section>
       <h2>Sign up: </h2>
-      <article>
+      <form onSubmit={handleRegister}>
         <label>
           Email:
           <input placeholder="Enter your email" ref={user} type="text" />
@@ -72,10 +73,8 @@ const Register = ({ sendMessage }) => {
           />
         </label>
         <br />
-
-        <br />
-        <input type="button" value="Sign up" onClick={handleRegister} />
-      </article>
+        <input type="submit" value="Sign up" />
+      </form>
       <EndCard title="Do you already have an account?" link="/" text="Login!" />
     </section>
   );

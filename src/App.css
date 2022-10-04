@@ -18,10 +18,17 @@
 li {
   border: 1px black solid;
   padding: 0;
+  list-style: none;
 }
 .ok {
   background: #d4edda;
   color: rgb(35, 168, 35);
+}
+.ok2 {
+  color: rgb(35, 168, 35);
+}
+.error2 {
+  color: #e30013;
 }
 .note {
   border-radius: 5px;
