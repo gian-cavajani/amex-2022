@@ -13,11 +13,7 @@ const Login = ({ sendMessage }) => {
   useEffect(() => {
     const userId = functions.getStorage();
     if (userId.user) {
-      if (userId.user === 'admin@gmail.com') {
-        navigate('/admin-page');
-      } else {
-        navigate('/notes');
-      }
+      navigate('/home');
     }
   }, []);
 
@@ -42,11 +38,10 @@ const Login = ({ sendMessage }) => {
         );
         if (username === 'admin@gmail.com') {
           functions.setStorage(username, 'admin', userInfo.user.uid);
-          navigate('/admin-page');
         } else {
           functions.setStorage(username, 'user', userInfo.user.uid);
-          navigate('/notes');
         }
+        navigate('/home');
         sendMessage('ok', 'successful login');
       } catch (error) {
         sendMessage('error', error.message);
@@ -67,7 +62,7 @@ const Login = ({ sendMessage }) => {
             required
           />
         </label>
-        <label for="loginPass">
+        <label>
           Password:
           <input
             id="loginPass"

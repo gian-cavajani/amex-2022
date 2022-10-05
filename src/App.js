@@ -9,10 +9,11 @@ import { store } from './store/store';
 import Register from './components/Register';
 import Login from './components/Login';
 import Notification from './components/Notification';
-import Notes from './components/Notes';
+// import Notes from './components/Notes';
 import ErrorPage from './components/ErrorPage';
 import NewNote from './components/NewNote';
-import Admin from './components/Admin';
+// import Admin from './components/Admin';
+import Home from './components/Home';
 
 function App() {
   const [message, setMessage] = useState({ code: null, message: null });
@@ -38,15 +39,12 @@ function App() {
               path="/register"
               element={<Register sendMessage={sendMessage} />}
             />
-            <Route
-              path="/notes"
-              element={<Notes sendMessage={sendMessage} />}
-            />
+
             <Route
               path="/newNote"
               element={<NewNote sendMessage={sendMessage} />}
             />
-            <Route path="/admin-page" element={<Admin />} />
+            <Route path="/home" element={<Home />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>

@@ -4,6 +4,8 @@ import { collection, addDoc } from 'firebase/firestore';
 import functions from '../utils/funs';
 import { useNavigate } from 'react-router-dom';
 import EndCard from './EndCard';
+import { useDispatch } from 'react-redux';
+import { addNote } from '../features/notesSlice';
 
 const NewNote = ({ sendMessage }) => {
   let navigate = useNavigate();
@@ -13,6 +15,8 @@ const NewNote = ({ sendMessage }) => {
       navigate('/');
     }
   }, []);
+
+  const dispatch = useDispatch();
 
   const notesCollectionRef = collection(db, 'notes');
   const title = useRef(null);
@@ -29,7 +33,7 @@ const NewNote = ({ sendMessage }) => {
       sendMessage('error', 'Inputs shouldnt be empty ');
     } else {
       try {
-        await addDoc(notesCollectionRef, {
+        const newDoc = {
           title: newTitle,
           date: new Date(),
           status: false,
@@ -37,7 +41,9 @@ const NewNote = ({ sendMessage }) => {
           userId: id,
           type,
           deleted: false,
-        });
+        };
+        await addDoc(notesCollectionRef, newDoc);
+        dispatch(addNote(newDoc));
         sendMessage('ok', 'Note created');
       } catch (error) {
         sendMessage('error', error.message);
@@ -73,7 +79,7 @@ const NewNote = ({ sendMessage }) => {
         </label>
         <button onClick={handleNewNote}>create</button>
       </article>
-      <EndCard title="Go to your " link="/notes" text="Notes" />
+      <EndCard title="Go to your " link="/home" text="Notes" />
     </section>
   );
 };

@@ -1,60 +1,37 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../firebase-config';
 import { signOut } from 'firebase/auth';
-import {
-  collection,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  doc,
-} from 'firebase/firestore';
+import { collection, updateDoc, doc } from 'firebase/firestore';
+
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import Loading from './Loading';
+import {
+  removeAllNotes,
+  removeNote,
+  updateStatus,
+} from '../features/notesSlice';
+
 import Note from './Note';
-import functions from '../utils/funs';
 
-const Notes = ({ sendMessage }) => {
-  const [load, setLoad] = useState(true);
-  const [notes, setNotes] = useState([]);
+const User = ({ user, sendMessage }) => {
   const [showAll, setShowAll] = useState(true);
-  const [user, setUser] = useState(null);
+  const notesCollectionRef = collection(db, 'notes');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const notesCollectionRef = collection(db, 'notes');
-
-  useEffect(() => {
-    const storage = functions.getStorage();
-    setUser(storage);
-    if (!storage.user) {
-      navigate('/');
-    } else {
-      const getUserNotes = async () => {
-        
-        const data = await getDocs(notesCollectionRef);
-        
-        setNotes(
-          data.docs
-            .map((doc) => ({ ...doc.data(), id: doc.id }))
-            .filter((note) => note.userId == storage.id && !note.deleted)
-        );
-        setLoad(false);
-      };
-      getUserNotes();
-    }
-  }, []);
+  const notes = useSelector((state) => state.notes.notes);
 
   const handleSignOut = async () => {
     await signOut(auth);
     localStorage.clear();
+    dispatch(removeAllNotes());
     navigate('/');
   };
 
-  //NOTE DELETE
+  //NOTE DELETE | ANDA BIEN
   const deleteNote = async (id) => {
     const noteDoc = doc(db, 'notes', id);
     const newFields = {
@@ -62,30 +39,29 @@ const Notes = ({ sendMessage }) => {
     };
 
     await updateDoc(noteDoc, newFields);
-    sendMessage('ok', 'note deleted');
-    setNotes(notes.filter((note) => note.id !== id));
+    // sendMessage('ok', 'note deleted');
+    dispatch(removeNote(id));
   };
 
-  //NOTE UPDATE
+  //NOTE UPDATE | NO ANDA EL DISPATCH
   const updateNote = async (id, state) => {
     const noteDoc = doc(db, 'notes', id);
     const newFields = {
       state: !state,
     };
     await updateDoc(noteDoc, newFields);
-    sendMessage('ok', 'note completed');
-    setNotes(
-      notes.map((note) => (note.id !== id ? note : { ...note, state: !state }))
-    );
+    dispatch(updateStatus(id));
+    // sendMessage('ok', 'note completed');
+    // setNotes(
+    //   notes.map((note) => (note.id !== id ? note : { ...note, state: !state }))
+    // );
   };
 
   let notesToShow = notes;
   if (!showAll) {
     notesToShow = notes.filter((note) => note.state !== true);
   }
-  if (load) {
-    return <Loading />;
-  }
+
   return (
     <section>
       <p>
@@ -129,4 +105,4 @@ const Notes = ({ sendMessage }) => {
   );
 };
 
-export default Notes;
+export default User;

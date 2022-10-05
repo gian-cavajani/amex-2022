@@ -1,40 +1,14 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
-import functions from '../utils/funs';
-import Loading from './Loading';
 import { useNavigate } from 'react-router-dom';
-import { db, auth } from '../firebase-config';
+import { auth } from '../firebase-config';
 import { signOut } from 'firebase/auth';
-import {
-  collection,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  doc,
-} from 'firebase/firestore';
+import { useSelector } from 'react-redux';
 
-const Admin = () => {
-  const [notes, setNotes] = useState([]);
-  const [load, setLoad] = useState(true);
+const Admin = ({ user }) => {
+  // const [notes, setNotes] = useState([]);
   let navigate = useNavigate();
-  const notesCollectionRef = collection(db, 'notes');
 
-  useEffect(() => {
-    const userId = functions.getStorage();
-    if (userId.user !== 'admin@gmail.com') {
-      navigate('/notes');
-    }
-    const getAllNotes = async () => {
-      const data = await getDocs(notesCollectionRef);
-      setNotes(
-        data.docs
-          .map((doc) => ({ ...doc.data(), id: doc.id }))
-          .filter((note) => note.deleted)
-      );
-      setLoad(false);
-    };
-    getAllNotes();
-  }, []);
+  let notes = useSelector((state) => state.notes.notes);
 
   const handleSignOut = async () => {
     await signOut(auth);
@@ -42,13 +16,10 @@ const Admin = () => {
     navigate('/');
   };
 
-  if (load) {
-    return <Loading />;
-  }
   return (
     <section>
       <p>
-        user logged in: <strong>Admin</strong>
+        user logged in: <strong>{user.user}</strong>
         <button onClick={handleSignOut}>Log Out</button>
       </p>
       <h2>Notes deleted:</h2>

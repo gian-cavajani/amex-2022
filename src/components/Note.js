@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Note = ({ note, deleteNoteWithId, updateNoteState }) => {
   return (
     <section key={note.id} className="note">

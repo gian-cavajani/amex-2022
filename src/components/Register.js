@@ -42,9 +42,9 @@ const Register = ({ sendMessage }) => {
           username,
           password
         );
-        functions.setStorage(username, password, userInfo.user.uid);
+        functions.setStorage(username, 'user', userInfo.user.uid);
         sendMessage('ok', 'successful register');
-        navigate('/notes');
+        navigate('/home');
       } catch (error) {
         sendMessage('error', error.message);
       }

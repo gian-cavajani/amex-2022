@@ -1,6 +1,6 @@
-const setStorage = (user, pass, id) => {
+const setStorage = (user, type, id) => {
   localStorage.setItem('userName', user);
-  localStorage.setItem('userPass', pass);
+  localStorage.setItem('userType', type);
   localStorage.setItem('userId', id);
 };
 const getStorage = () => {
