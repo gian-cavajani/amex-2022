@@ -13,10 +13,9 @@ import {
   doc,
 } from 'firebase/firestore';
 
-const Admin = ({ sendMessage }) => {
+const Admin = () => {
   const [notes, setNotes] = useState([]);
   const [load, setLoad] = useState(true);
-  const [showAll, setShowAll] = useState(true);
   let navigate = useNavigate();
   const notesCollectionRef = collection(db, 'notes');
 
@@ -27,7 +26,11 @@ const Admin = ({ sendMessage }) => {
     }
     const getAllNotes = async () => {
       const data = await getDocs(notesCollectionRef);
-      setNotes(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setNotes(
+        data.docs
+          .map((doc) => ({ ...doc.data(), id: doc.id }))
+          .filter((note) => note.deleted)
+      );
       setLoad(false);
     };
     getAllNotes();
@@ -39,10 +42,6 @@ const Admin = ({ sendMessage }) => {
     navigate('/');
   };
 
-  let notesToShow = notes;
-  if (!showAll) {
-    notesToShow = notes.filter((note) => note.deleted);
-  }
   if (load) {
     return <Loading />;
   }
@@ -52,11 +51,9 @@ const Admin = ({ sendMessage }) => {
         user logged in: <strong>Admin</strong>
         <button onClick={handleSignOut}>Log Out</button>
       </p>
-      <button onClick={() => setShowAll(!showAll)}>
-        show {showAll ? 'only deleted' : 'all'}
-      </button>
+      <h2>Notes deleted:</h2>
       <ul>
-        {notesToShow.map((n) => (
+        {notes.map((n) => (
           <li key={n.id}>
             <p>title: {n.title}</p>
             status:{' '}

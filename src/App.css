@@ -30,6 +30,10 @@ li {
 .error2 {
   color: #e30013;
 }
+label {
+  display: block;
+  margin: 5px;
+}
 .note {
   border-radius: 5px;
   border: rgb(149, 149, 149) 1px solid;

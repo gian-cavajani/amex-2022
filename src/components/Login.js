@@ -26,23 +26,31 @@ const Login = ({ sendMessage }) => {
 
     let username = user.current.value;
     let password = pass.current.value;
+    const [isPassOk, passMessage] = functions.validatePass(password);
+    const [isEmailOk, emailMessage] = functions.validateEmail(username);
 
-    try {
-      const userInfo = await signInWithEmailAndPassword(
-        auth,
-        username,
-        password
-      );
-      if (username === 'admin@gmail.com') {
-        functions.setStorage(username, 'admin', userInfo.user.uid);
-        navigate('/admin-page');
-      } else {
-        functions.setStorage(username, 'user', userInfo.user.uid);
-        navigate('/notes');
+    if (!isPassOk) {
+      sendMessage('error', passMessage);
+    } else if (!isEmailOk) {
+      sendMessage('error', emailMessage);
+    } else {
+      try {
+        const userInfo = await signInWithEmailAndPassword(
+          auth,
+          username,
+          password
+        );
+        if (username === 'admin@gmail.com') {
+          functions.setStorage(username, 'admin', userInfo.user.uid);
+          navigate('/admin-page');
+        } else {
+          functions.setStorage(username, 'user', userInfo.user.uid);
+          navigate('/notes');
+        }
+        sendMessage('ok', 'successful login');
+      } catch (error) {
+        sendMessage('error', error.message);
       }
-      sendMessage('ok', 'successful login');
-    } catch (error) {
-      sendMessage('error', error.message);
     }
   };
 
@@ -52,15 +60,24 @@ const Login = ({ sendMessage }) => {
       <form onSubmit={handleLogin}>
         <label>
           Email:
-          <input placeholder="Enter your email" ref={user} type="text" />
+          <input
+            placeholder="Enter your email"
+            ref={user}
+            type="email"
+            required
+          />
         </label>
-        <br />
-        <label>
+        <label for="loginPass">
           Password:
-          <input placeholder="Enter your password" ref={pass} type="password" />
+          <input
+            id="loginPass"
+            placeholder="Enter your password"
+            ref={pass}
+            type="password"
+            required
+          />
         </label>
 
-        <br />
         <input type="submit" value="Login" />
       </form>
       <EndCard

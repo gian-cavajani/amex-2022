@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import EndCard from './EndCard';
 
 const Register = ({ sendMessage }) => {
+  let navigate = useNavigate();
   useEffect(() => {
     const userId = functions.getStorage();
     if (userId.user) {
@@ -17,7 +18,6 @@ const Register = ({ sendMessage }) => {
     }
   }, []);
 
-  let navigate = useNavigate();
   const user = useRef(null);
   const pass = useRef(null);
   const pass2 = useRef(null);
@@ -28,8 +28,13 @@ const Register = ({ sendMessage }) => {
     const password = pass.current.value;
     const password2 = pass2.current.value;
 
-    if (password !== password2) {
-      sendMessage('error', 'Passwords must be equal');
+    const [isPassOk, passMessage] = functions.validatePass(password, password2);
+    const [isEmailOk, emailMessage] = functions.validateEmail(username);
+
+    if (!isPassOk) {
+      sendMessage('error', passMessage);
+    } else if (!isEmailOk) {
+      sendMessage('error', emailMessage);
     } else {
       try {
         const userInfo = await createUserWithEmailAndPassword(
@@ -52,27 +57,31 @@ const Register = ({ sendMessage }) => {
       <form onSubmit={handleRegister}>
         <label>
           Email:
-          <input placeholder="Enter your email" ref={user} type="text" />
+          <input
+            placeholder="Enter your email"
+            ref={user}
+            type="email"
+            required
+          />
         </label>
-        <br />
         <label>
           Password:
           <input
             placeholder="Enter a new password"
             ref={pass}
             type="password"
+            required
           />
         </label>
-        <br />
         <label>
           Repeat Password:
           <input
             placeholder="Enter again your new password"
             ref={pass2}
             type="password"
+            required
           />
         </label>
-        <br />
         <input type="submit" value="Sign up" />
       </form>
       <EndCard title="Do you already have an account?" link="/" text="Login!" />

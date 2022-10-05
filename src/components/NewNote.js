@@ -53,7 +53,6 @@ const NewNote = ({ sendMessage }) => {
           Title:
           <input placeholder="Enter a title" ref={title} type="text" />
         </label>
-        <br />
         <label>
           Description:
           <textarea
@@ -62,7 +61,6 @@ const NewNote = ({ sendMessage }) => {
             type=""
           />
         </label>
-        <br />
         <label>
           Type:
           <select id="type" ref={selectRef}>
@@ -73,7 +71,6 @@ const NewNote = ({ sendMessage }) => {
             <option value="others">others</option>
           </select>
         </label>
-        <br />
         <button onClick={handleNewNote}>create</button>
       </article>
       <EndCard title="Go to your " link="/notes" text="Notes" />

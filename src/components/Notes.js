@@ -1,7 +1,5 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import functions from '../utils/funs';
-import Loading from './Loading';
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../firebase-config';
 import { signOut } from 'firebase/auth';
@@ -12,14 +10,20 @@ import {
   deleteDoc,
   doc,
 } from 'firebase/firestore';
+import { useDispatch } from 'react-redux';
+
+import Loading from './Loading';
 import Note from './Note';
+import functions from '../utils/funs';
 
 const Notes = ({ sendMessage }) => {
   const [load, setLoad] = useState(true);
   const [notes, setNotes] = useState([]);
   const [showAll, setShowAll] = useState(true);
   const [user, setUser] = useState(null);
-  let navigate = useNavigate();
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const notesCollectionRef = collection(db, 'notes');
 
@@ -30,7 +34,9 @@ const Notes = ({ sendMessage }) => {
       navigate('/');
     } else {
       const getUserNotes = async () => {
+        
         const data = await getDocs(notesCollectionRef);
+        
         setNotes(
           data.docs
             .map((doc) => ({ ...doc.data(), id: doc.id }))
