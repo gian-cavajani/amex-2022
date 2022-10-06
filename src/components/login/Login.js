@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { auth } from '../firebase-config';
+import { auth } from '../../firebase-config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import functions from '../utils/funs';
+import functions from '../../utils/funs';
 import { useNavigate } from 'react-router-dom';
-import EndCard from './EndCard';
+import EndCard from '../UI/EndCard';
 
 const Login = ({ sendMessage }) => {
   let navigate = useNavigate();

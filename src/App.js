@@ -6,14 +6,12 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 
 //COMPONENTS
-import Register from './components/Register';
-import Login from './components/Login';
-import Notification from './components/Notification';
-// import Notes from './components/Notes';
-import ErrorPage from './components/ErrorPage';
-import NewNote from './components/NewNote';
-// import Admin from './components/Admin';
-import Home from './components/Home';
+import Register from './components/register/Register';
+import Login from './components/login/Login';
+import Notification from './components/UI/Notification';
+import ErrorPage from './components/endpoints/ErrorPage';
+import NewNote from './components/newnote/NewNote';
+import Home from './components/home/Home';
 
 function App() {
   const [message, setMessage] = useState({ code: null, message: null });
@@ -44,7 +42,7 @@ function App() {
               path="/newNote"
               element={<NewNote sendMessage={sendMessage} />}
             />
-            <Route path="/home" element={<Home />} />
+            <Route path="/home" element={<Home sendMessage={sendMessage} />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>

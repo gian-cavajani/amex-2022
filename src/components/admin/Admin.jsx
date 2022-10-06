@@ -1,18 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase-config';
-import { signOut } from 'firebase/auth';
 import { useSelector } from 'react-redux';
+import logOut from '../../utils/logout';
 
 const Admin = ({ user }) => {
-  // const [notes, setNotes] = useState([]);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   let notes = useSelector((state) => state.notes.notes);
 
-  const handleSignOut = async () => {
-    await signOut(auth);
-    localStorage.clear();
+  const handleSignOut = () => {
+    logOut();
     navigate('/');
   };
 
